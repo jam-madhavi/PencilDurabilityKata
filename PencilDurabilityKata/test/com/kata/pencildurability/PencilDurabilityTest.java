@@ -9,11 +9,16 @@ public class PencilDurabilityTest {
 
 	Pencil pencil;
 	Paper paper;
-	
+	DurabilityCounter intialPencilDurability;
+	DurabilityCounter eraserDurability;
+	DurabilityCounter lowerPencilDurability;
 	@Before 
 	public void setUp () {
-		pencil = new Pencil ();
+		intialPencilDurability = new DurabilityCounter (50);
+		pencil = new Pencil (intialPencilDurability);
 		paper = new Paper ();
+		eraserDurability = new DurabilityCounter (5);
+		lowerPencilDurability = new DurabilityCounter (12);
 	}
 	
 	@Test
@@ -31,4 +36,18 @@ public class PencilDurabilityTest {
 		
 	}
 
+	@Test
+	public void test3PencilWritingTextLessThanInitialDurabilityTenCharacters () {
+		pencil.setDurability(lowerPencilDurability);
+		pencil.write(paper, "She sells");
+		assertEquals ("She sells", paper.getText().toString());
+	}
+	
+	@Test
+	public void test3PencilWritingTextMoreThanInitialDurabilityTenCharacters () {
+		pencil.setDurability(lowerPencilDurability);
+		pencil.write(paper, "She sells");
+		pencil.write(paper, "sea shells");
+		assertEquals ("She sells se         ", paper.getText().toString());
+	}
 }
