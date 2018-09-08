@@ -5,18 +5,29 @@ import java.util.stream.Stream;
 
 public class Pencil {
 
-	private DurabilityCounter durability;
+	private PointCounter pointDurability;
 	
-	public Pencil (DurabilityCounter durability) {
-		this.durability = durability;
+	private PointCounter pencilLength;
+	
+	public Pencil (PointCounter pointDurability, PointCounter pencilLength) {
+		this.pointDurability = pointDurability;
+		this.pencilLength = pencilLength;
 	}
 		
-	public DurabilityCounter getDurability() {
-		return durability;
+	public PointCounter getDurability() {
+		return pointDurability;
 	}
 
-	public void setDurability(DurabilityCounter durability) {
-		this.durability = durability;
+	public void setDurability(PointCounter durability) {
+		this.pointDurability = durability;
+	}
+	
+	public PointCounter getPencilLength() {
+		return pencilLength;
+	}
+
+	public void setPencilLength(PointCounter pencilLength) {
+		this.pencilLength = pencilLength;
 	}
 
 	public static int degradeDurability (int pencilDurability, char c) {
@@ -41,8 +52,8 @@ public class Pencil {
 		Stream<Character> characterStream = text.chars().mapToObj( c -> (char) c);
 		
 		characterStream.forEach(c -> {
-			int pencilDurability = durability.getDurability();
-			int initialDurability = durability.getDurability();
+			int pencilDurability = pointDurability.getPointCounter();
+			int initialDurability = pointDurability.getPointCounter();
 			if (pencilDurability != 0) {
 				existingText.append(c);
 			}
@@ -51,10 +62,8 @@ public class Pencil {
 			if (initialDurability == 0 && pencilDurability == 0) {
 				existingText.append(" ");
 			}
-			durability.setDurability(pencilDurability);
+			pointDurability.setPointCounter(pencilDurability);
 		});
-		
-
 		
 		paper.setText(existingText);
 	}
