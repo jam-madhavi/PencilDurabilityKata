@@ -14,6 +14,7 @@ public class PencilDurabilityTest {
 	PointCounter eraserDurability;
 	PointCounter lowerIntialDurabilityPencil;
 	Sharpner sharpner;
+	Eraser eraser;
 	static int HIGHER_DEGRAGE_POINT;
 	static int LOWER_DEGRADE_POINT;
 	static int HIGHER_LENGTH_VALUE;
@@ -21,7 +22,7 @@ public class PencilDurabilityTest {
 	
 	@Before 
 	public void setUp () {
-		HIGHER_DEGRAGE_POINT = 50;
+		HIGHER_DEGRAGE_POINT = 100;
 		LOWER_DEGRADE_POINT = 12;
 		intialPencilDurability = new PointCounter (HIGHER_DEGRAGE_POINT);
 		
@@ -34,6 +35,7 @@ public class PencilDurabilityTest {
 		eraserDurability = new PointCounter (LOWER_DEGRADE_POINT);
 		lowerIntialDurabilityPencil = new PointCounter (LOWER_DEGRADE_POINT);
 		sharpner = new Sharpner ();
+		eraser = new Eraser ();
 	}
 	
 	@Test
@@ -107,5 +109,17 @@ public class PencilDurabilityTest {
 		pencil.write(paper, "down by the sea shore");
 		assertEquals ("She Sells sea shells down by the sea      ", paper.getText().toString());
 		assertEquals ("0", pencil.getPencilLength().toString());
+	}
+	
+	@Test
+	public void test10EraseText () {
+		String text = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?";
+		String text1 = "How much wood would a woodchuck chuck if a woodchuck could       wood?";
+		pencil.write(paper, text);
+		eraser.erase(paper, "chuck");
+		assertEquals (text1, paper.getText().toString());
+		eraser.erase(paper, "chuck");
+		assertEquals ("How much wood would a woodchuck chuck if a wood      could       wood?",
+						paper.getText().toString());
 	}
 }
