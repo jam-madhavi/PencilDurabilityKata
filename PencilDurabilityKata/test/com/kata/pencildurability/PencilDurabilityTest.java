@@ -11,14 +11,14 @@ public class PencilDurabilityTest {
 	Paper paper;
 	DurabilityCounter intialPencilDurability;
 	DurabilityCounter eraserDurability;
-	DurabilityCounter lowerPencilDurability;
+	DurabilityCounter lowerDurabilityPencil;
 	@Before 
 	public void setUp () {
 		intialPencilDurability = new DurabilityCounter (50);
 		pencil = new Pencil (intialPencilDurability);
 		paper = new Paper ();
 		eraserDurability = new DurabilityCounter (5);
-		lowerPencilDurability = new DurabilityCounter (12);
+		lowerDurabilityPencil = new DurabilityCounter (12);
 	}
 	
 	@Test
@@ -38,16 +38,24 @@ public class PencilDurabilityTest {
 
 	@Test
 	public void test3PencilWritingTextLessThanInitialDurabilityTenCharacters () {
-		pencil.setDurability(lowerPencilDurability);
+		pencil.setDurability(lowerDurabilityPencil);
 		pencil.write(paper, "She sells");
 		assertEquals ("She sells", paper.getText().toString());
 	}
 	
 	@Test
-	public void test3PencilWritingTextMoreThanInitialDurabilityTenCharacters () {
-		pencil.setDurability(lowerPencilDurability);
-		pencil.write(paper, "She sells");
+	public void test4PencilWritingTextMoreThanInitialDurabilityTenCharacters () {
+		pencil.setDurability(lowerDurabilityPencil);
+		pencil.write(paper, "she sells");
 		pencil.write(paper, "sea shells");
-		assertEquals ("She sells se         ", paper.getText().toString());
+		assertEquals ("she sells sea s     ", paper.getText().toString());
+	}
+	
+	@Test
+	public void test5PencilWritingTextUpperCaseLettersDegradePencilByTwo () {
+		pencil.setDurability(lowerDurabilityPencil);
+		pencil.write(paper, "She Sells");
+		pencil.write(paper, "sea shells");
+		assertEquals ("She Sells se        ", paper.getText().toString());
 	}
 }
