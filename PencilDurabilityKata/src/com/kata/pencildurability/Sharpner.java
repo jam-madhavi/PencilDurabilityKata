@@ -8,7 +8,7 @@ public class Sharpner {
 			pencil.getPencilLength().decrementPointCounter();
 			pencil.getDurability().setPointCounter(pointDurability);
 		} else {
-			System.out.println("Pencil lenght is zero, cannot restore its point durability.");
+			System.out.println("Pencil length is zero, cannot restore its point durability.");
 		}
 	}
 }

@@ -46,15 +46,15 @@ public class PencilDurabilityTest {
 	
 	@Test
 	public void test1WriteTextOnPaperWithPencil() {
-		pencil.write(paper, "She sells sea shells");
+		pencil.writeText(paper, "She sells sea shells");
 		assertEquals ("She sells sea shells", paper.getText().toString());
 		
 	}
 	
 	@Test
 	public void test2AppendTextToExistingTextOnPaperWithPencil () {
-		pencil.write(paper, "She sells sea shells");
-		pencil.write(paper, "down by the sea shore");
+		pencil.writeText(paper, "She sells sea shells");
+		pencil.writeText(paper, "down by the sea shore");
 		assertEquals ("She sells sea shells down by the sea shore", paper.getText().toString());
 		
 	}
@@ -62,32 +62,32 @@ public class PencilDurabilityTest {
 	@Test
 	public void test3PencilWritingTextLessThanInitialDurabilityTenCharacters () {
 		pencil.setDurability(lowerIntialDurabilityPencil);
-		pencil.write(paper, "She sells");
+		pencil.writeText(paper, "She sells");
 		assertEquals ("She sells", paper.getText().toString());
 	}
 	
 	@Test
 	public void test4PencilWritingTextMoreThanInitialDurabilityTenCharacters () {
 		pencil.setDurability(lowerIntialDurabilityPencil);
-		pencil.write(paper, "she sells");
-		pencil.write(paper, "sea shells");
+		pencil.writeText(paper, "she sells");
+		pencil.writeText(paper, "sea shells");
 		assertEquals ("she sells sea s     ", paper.getText().toString());
 	}
 	
 	@Test
 	public void test5PencilWritingTextUpperCaseLettersDegradePencilByTwo () {
 		pencil.setDurability(lowerIntialDurabilityPencil);
-		pencil.write(paper, "She Sells");
-		pencil.write(paper, "sea shells");
+		pencil.writeText(paper, "She Sells");
+		pencil.writeText(paper, "sea shells");
 		assertEquals ("She Sells se        ", paper.getText().toString());
 	}
 	
 	@Test
 	public void test6PencilWritingTextSharpenPencil () {
 		pencil.setDurability(lowerIntialDurabilityPencil);
-		pencil.write(paper, "She Sells");
+		pencil.writeText(paper, "She Sells");
 		sharpner.sharpen(pencil, LOWER_DEGRADE_POINT);
-		pencil.write(paper, "sea shells");
+		pencil.writeText(paper, "sea shells");
 		assertEquals ("She Sells sea shells", paper.getText().toString());
 		
 	}
@@ -99,20 +99,20 @@ public class PencilDurabilityTest {
 	
 	@Test
 	public void test8CheckPencilLengthAfterSharpen () {
-		pencil.write(paper, "She Sells");
+		pencil.writeText(paper, "She Sells");
 		sharpner.sharpen(pencil, LOWER_DEGRADE_POINT);
-		pencil.write(paper, "sea shells");
+		pencil.writeText(paper, "sea shells");
 		assertEquals ("She Sells sea shells", paper.getText().toString());
 		assertEquals ("1", pencil.getPencilLength().toString());
 	}
 	
 	@Test
 	public void test9NoRestorePencilDurabilityWhenPencilLengthIsZero () {
-		pencil.write(paper, "She Sells");
+		pencil.writeText(paper, "She Sells");
 		sharpner.sharpen(pencil, LOWER_DEGRADE_POINT);
-		pencil.write(paper, "sea shells");
+		pencil.writeText(paper, "sea shells");
 		sharpner.sharpen(pencil, LOWER_DEGRADE_POINT);
-		pencil.write(paper, "down by the sea shore");
+		pencil.writeText(paper, "down by the sea shore");
 		assertEquals ("She Sells sea shells down by the sea      ", paper.getText().toString());
 		assertEquals ("0", pencil.getPencilLength().toString());
 	}
@@ -121,7 +121,7 @@ public class PencilDurabilityTest {
 	public void test10EraseText () {
 		String text = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?";
 		String text1 = "How much wood would a woodchuck chuck if a woodchuck could       wood?";
-		pencil.write(paper, text);
+		pencil.writeText(paper, text);
 		eraser.erase(paper, "chuck");
 		assertEquals (text1, paper.getText().toString());
 		eraser.erase(paper, "chuck");
@@ -131,10 +131,38 @@ public class PencilDurabilityTest {
 	
 	@Test
 	public void test11EraserPointDurabilityDegrade () {
-		pencil.write(paper, "Buffalo Bill");
+		pencil.writeText(paper, "Buffalo Bill");
 		eraser.getPointDurability().setPointCounter(LOWER_DEGRAGE_POINT_ERASER);
 		assertEquals("3", eraser.getPointDurability().toString());
 		eraser.erase(paper, "Bill");
 		assertEquals("Buffalo B   ", paper.getText().toString());
+	}
+	
+	@Test
+	public void test12EditTextExactWordFit ()  {
+		pencil.writeText(paper, "An       a day keeps the doctor away");
+		pencil.editText(paper, "onion");
+		assertEquals("An onion a day keeps the doctor away", paper.getText().toString());
+	}
+	
+	@Test
+	public void test13EditTextLessCharacterWordToReplace ()  {
+		pencil.writeText(paper, "An       a day keeps the doctor away");
+		pencil.editText(paper, "ogen");
+		assertEquals("An ogen  a day keeps the doctor away", paper.getText().toString());
+	}
+	
+	@Test
+	public void test13EditTextNineCharacterWordToReplace ()  {
+		pencil.writeText(paper, "An       a day keeps the doctor away");
+		pencil.editText(paper, "artichoke");
+		assertEquals("An artich@k@ay keeps the doctor away", paper.getText().toString());
+	}
+	
+	@Test
+	public void test14EditTextTenCharacterWordToReplace ()  {
+		pencil.writeText(paper, "An       a day keeps the doctor away");
+		pencil.editText(paper, "watermelon");
+		assertEquals("An waterm@l@@y keeps the doctor away", paper.getText().toString());
 	}
 }
