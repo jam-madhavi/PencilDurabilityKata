@@ -11,14 +11,16 @@ public class PencilDurabilityTest {
 	Paper paper;
 	PointCounter intialPencilDurability;
 	PointCounter initialPencilLength;
-	PointCounter eraserDurability;
+	PointCounter intialEraserDurability;
 	PointCounter lowerIntialDurabilityPencil;
+	PointCounter lowerIntialDurabilityEraser;
 	Sharpner sharpner;
 	Eraser eraser;
 	static int HIGHER_DEGRAGE_POINT;
 	static int LOWER_DEGRADE_POINT;
 	static int HIGHER_LENGTH_VALUE;
 	static int LOWER_LENGTH_VALUE;
+	static int LOWER_DEGRAGE_POINT_ERASER;
 	
 	@Before 
 	public void setUp () {
@@ -29,13 +31,17 @@ public class PencilDurabilityTest {
 		HIGHER_LENGTH_VALUE = 5;
 		LOWER_LENGTH_VALUE = 2;
 		initialPencilLength = new PointCounter(LOWER_LENGTH_VALUE);
-		
-		pencil = new Pencil (intialPencilDurability, initialPencilLength);
-		paper = new Paper ();
-		eraserDurability = new PointCounter (LOWER_DEGRADE_POINT);
+
 		lowerIntialDurabilityPencil = new PointCounter (LOWER_DEGRADE_POINT);
+		pencil = new Pencil (intialPencilDurability, initialPencilLength);
+		
+		paper = new Paper ();
 		sharpner = new Sharpner ();
-		eraser = new Eraser ();
+		
+		LOWER_DEGRAGE_POINT_ERASER = 3;
+		intialEraserDurability = new PointCounter (LOWER_DEGRADE_POINT);
+		lowerIntialDurabilityEraser = new PointCounter (LOWER_DEGRAGE_POINT_ERASER);
+		eraser = new Eraser (intialEraserDurability);
 	}
 	
 	@Test
@@ -121,5 +127,14 @@ public class PencilDurabilityTest {
 		eraser.erase(paper, "chuck");
 		assertEquals ("How much wood would a woodchuck chuck if a wood      could       wood?",
 						paper.getText().toString());
+	}
+	
+	@Test
+	public void test11EraserPointDurabilityDegrade () {
+		pencil.write(paper, "Buffalo Bill");
+		eraser.getPointDurability().setPointCounter(LOWER_DEGRAGE_POINT_ERASER);
+		assertEquals("3", eraser.getPointDurability().toString());
+		eraser.erase(paper, "Bill");
+		assertEquals("Buffalo B   ", paper.getText().toString());
 	}
 }
