@@ -3,7 +3,11 @@ package com.kata.pencildurability;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
 public class PencilDurabilityTest {
 
@@ -21,6 +25,16 @@ public class PencilDurabilityTest {
 	static int HIGHER_LENGTH_VALUE;
 	static int LOWER_LENGTH_VALUE;
 	static int LOWER_DEGRAGE_POINT_ERASER;
+	
+	@Rule
+	public TestRule watcher = new TestWatcher() {
+	   protected void starting(Description description) {
+	      System.out.println("Starting test: " + description.getMethodName());
+	   }
+	   protected void finished(Description description) {
+		      System.out.println("Finished running test: " + description.getMethodName());
+		   }
+	};
 	
 	@Before 
 	public void setUp () {
