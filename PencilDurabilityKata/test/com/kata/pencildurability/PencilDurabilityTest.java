@@ -153,14 +153,14 @@ public class PencilDurabilityTest {
 	}
 	
 	@Test
-	public void test13EditTextNineCharacterWordToReplace ()  {
+	public void test14EditTextNineCharacterWordToReplace ()  {
 		pencil.writeText(paper, "An       a day keeps the doctor away");
 		pencil.editText(paper, "artichoke");
 		assertEquals("An artich@k@ay keeps the doctor away", paper.getText().toString());
 	}
 	
 	@Test
-	public void test14EditTextTenCharacterWordToReplace ()  {
+	public void test15EditTextTenCharacterWordToReplace ()  {
 		pencil.writeText(paper, "An       a day keeps the doctor away");
 		pencil.editText(paper, "watermelon");
 		assertEquals("An waterm@l@@y keeps the doctor away", paper.getText().toString());
